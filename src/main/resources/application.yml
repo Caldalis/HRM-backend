@@ -1,0 +1,63 @@
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为8080
+  port: 8080
+  servlet:
+    # 应用的访问路径
+    context-path: /
+
+# 日志配置
+logging:
+  level:
+    com.prj: debug
+    org.springframework: warn
+
+# Spring配置
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      dll-auto: validate
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    #数据源
+    url: jdbc:mysql://localhost:3306/hr_manager?characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: 1234
+    # 初始连接数
+    initialSize: 5
+    # 最小连接池数量
+    minIdle: 10
+    # 最大连接池数量
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 10000
+  # redis 配置
+  redis:
+    # 地址s
+    host: 192.168.92.128
+    # 端口，默认为6379
+    port: 6379
+    password: 1234
+
+# token配置
+token:
+    # token自定义标识
+    header: Authorization
+    # 密钥
+    secret: springbootVue123
+    # 有效期
+    expireTime: 30
+  
+# MyBatis配置
+mybatis:
+    # 搜索指定包别名
+    typeAliasesPackage: com.prj.**.domain
+    # 配置mapper的扫描，找到所有的mapper.xml映射文件
+    mapperLocations: classpath*:mapper/**/*Mapper.xml
+
+# PageHelper分页插件
+pagehelper: 
+  helperDialect: mysql
+  supportMethodsArguments: true
+  params: count=countSql 

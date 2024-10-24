@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.mapper.EmployeeKpiMapper">
+    
+    <resultMap type="EmployeeKpi" id="EmployeeKpiResult">
+        <result property="id"    column="id"    />
+        <result property="kpi"    column="kpi"    />
+        <result property="bonus"    column="bonus"    />
+        <result property="manager"    column="manager"    />
+    </resultMap>
+
+    <sql id="selectEmployeeKpiVo">
+        select id, kpi, bonus, manager from employee_kpi
+    </sql>
+
+    <select id="selectEmployeeKpiList" parameterType="EmployeeKpi" resultMap="EmployeeKpiResult">
+        <include refid="selectEmployeeKpiVo"/>
+        <where>  
+            <if test="kpi != null  and kpi != ''"> and kpi = #{kpi}</if>
+            <if test="bonus != null  and bonus != ''"> and bonus = #{bonus}</if>
+            <if test="manager != null  and manager != ''"> and manager = #{manager}</if>
+        </where>
+    </select>
+    
+    <select id="selectEmployeeKpiById" parameterType="Long" resultMap="EmployeeKpiResult">
+        <include refid="selectEmployeeKpiVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEmployeeKpi" parameterType="EmployeeKpi" useGeneratedKeys="true" keyProperty="id">
+        insert into employee_kpi
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="kpi != null">kpi,</if>
+            <if test="bonus != null">bonus,</if>
+            <if test="manager != null">manager,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="kpi != null">#{kpi},</if>
+            <if test="bonus != null">#{bonus},</if>
+            <if test="manager != null">#{manager},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEmployeeKpi" parameterType="EmployeeKpi">
+        update employee_kpi
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="kpi != null">kpi = #{kpi},</if>
+            <if test="bonus != null">bonus = #{bonus},</if>
+            <if test="manager != null">manager = #{manager},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEmployeeKpiById" parameterType="Long">
+        delete from employee_kpi where id = #{id}
+    </delete>
+
+    <delete id="deleteEmployeeKpiByIds" parameterType="String">
+        delete from employee_kpi where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

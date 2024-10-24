@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.mapper.HireNumMapper">
+    
+    <resultMap type="HireNum" id="HireNumResult">
+        <result property="id"    column="id"    />
+        <result property="dept"    column="dept"    />
+        <result property="num"    column="num"    />
+        <result property="endtime"    column="endtime"    />
+    </resultMap>
+
+    <sql id="selectHireNumVo">
+        select id, dept, num, endtime from hire_num
+    </sql>
+
+    <select id="selectHireNumList" parameterType="HireNum" resultMap="HireNumResult">
+        <include refid="selectHireNumVo"/>
+        <where>  
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="endtime != null  and endtime != ''"> and endtime = #{endtime}</if>
+        </where>
+    </select>
+    
+    <select id="selectHireNumById" parameterType="Long" resultMap="HireNumResult">
+        <include refid="selectHireNumVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHireNum" parameterType="HireNum" useGeneratedKeys="true" keyProperty="id">
+        insert into hire_num
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dept != null">dept,</if>
+            <if test="num != null">num,</if>
+            <if test="endtime != null">endtime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dept != null">#{dept},</if>
+            <if test="num != null">#{num},</if>
+            <if test="endtime != null">#{endtime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHireNum" parameterType="HireNum">
+        update hire_num
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dept != null">dept = #{dept},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="endtime != null">endtime = #{endtime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHireNumById" parameterType="Long">
+        delete from hire_num where id = #{id}
+    </delete>
+
+    <delete id="deleteHireNumByIds" parameterType="String">
+        delete from hire_num where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
