@@ -35,10 +35,10 @@ spring:
   # redis 配置
   redis:
     # 地址s
-    host: 192.168.92.128
+    host: 
     # 端口，默认为6379
     port: 6379
-    password: 1234
+    password: 
 
 # token配置
 token:
